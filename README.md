@@ -2,7 +2,7 @@
   <img src="https://github.com/CerepuhXD/Radarchan/blob/main/logo.jpg" alt="Логотип проекта" width="300">
 </p>
 
-<p align="center"># Radarchan</p>
+# <p align="center">Radarchan</p>
 
 Здравствуйте! Этот проект посвящён созданию свободного имиджбоарда, который позволит участникам общаться без цензуры с помощью mesh технологии передачи пакетов.
 
