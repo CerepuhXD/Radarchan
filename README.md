@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.jpg" alt="Логотип проекта" width="600">
+  <img src="https://github.com/CerepuhXD/Radarchan/blob/main/logo.jpg" alt="Логотип проекта" width="600">
 </p>
 
 # Radarchan
