@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Radarchan</title>
+  <style type="text/css">
+    body {
+      background-image: url("fade.png");
+      background-repeat: repeat-x; 
+      background-size: 100% 100vh; 
+      background-attachment: fixed; 
+      margin: 0;
+      padding: 0;
+      min-height: 100vh; 
+    }
+
+    /* ШАПКА САЙТА */
+    .header-container {
+      display: flex;
+      flex-direction: column;   
+      align-items: center;      
+      padding-top: 20px;        
+      width: 100%;
+    }
+
+    .top-logo {
+      max-width: 10%;       
+      height: auto;
+      margin-bottom: 10px;      
+    }
+
+    .coords-text {
+      font-family: monospace;
+      font-size: clamp(30px, 5vw, 65px); 
+      color: #800000;     
+      font-weight: bold; 
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    /* КОНТЕЙНЕР ДЛЯ ТАБЛИЦЫ */
+    .content-container {
+      padding: 20px; 
+      margin-top: 30px; 
+      margin-bottom: 50px;
+    }
+
+    /* СТИЛИ ТАБЛИЦЫ С ЗАГЛОВКАМИ И ТЕКСТОМ */
+    .info-table {
+      width: 100%;
+      max-width: 900px;         
+      margin: 0 auto;        
+      border-collapse: collapse;
+      font-family: monospace;   
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    }
+
+    /* Главная верхняя плашка таблицы */
+    .info-table th {
+      background-color: #800000;
+      color: #ffffff;           
+      padding: 15px;
+      font-size: 20px;
+      border: 1px solid #600000;
+      text-align: left;
+    }
+
+    /* Обычные ячейки */
+    .info-table td {
+      padding: 20px;            
+      border: 1px solid #d9d9d9;
+      vertical-align: top;      
+    }
+
+    /* Заголовки внутри ячеек */
+    .cell-title {
+      margin-top: 0;            
+      margin-bottom: 10px;      
+      color: #800000;           
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Текст внутри ячеек */
+    .cell-text {
+      margin: 0;
+      color: #333333;           
+      font-size: 14px;
+      line-height: 1.5;         
+    }
+
+    .info-table tr:hover {
+      background-color: #fcfcfc;
+    }
+
+    /* --- КОД ДЛЯ КАСТОМНОГО ПОЛЗУНКА --- */
+    /* Скрываем системные полосы прокрутки браузера */
+    ::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+    html { scrollbar-width: none !important; }
+
+    /* Дорожка у правого края */
+    .custom-scrollbar-track {
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      width: 14px !important;
+      height: 100vh !important;
+      background: rgba(0, 0, 0, 0.02) !important; 
+      z-index: 999999 !important; 
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .custom-scrollbar-track:hover {
+      background: rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* Бордовый бегунок */
+    .custom-scrollbar-thumb {
+      position: absolute !important;
+      top: 0 !important;
+      left: 3px !important;
+      width: 8px !important;
+      background: #800000 !important; 
+      border-radius: 4px !important;
+      cursor: grab;
+      opacity: 0.6;
+      transition: opacity 0.2s, width 0.1s, left 0.1s;
+    }
+
+    .custom-scrollbar-track:hover .custom-scrollbar-thumb {
+      opacity: 0.9;
+      width: 10px !important;
+      left: 2px !important;
+    }
+
+    .custom-scrollbar-thumb:active {
+      opacity: 1 !important;
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Адаптивная шапка сайта -->
+  <div class="header-container">
+      <img src="logo3.png" alt="Логотип сайта" class="top-logo">
+      <div class="coords-text">Radarchan</div>
+  </div>
+
+  <!-- Простая таблица с рамкой border="1" -->
+<table border="1" cellpadding="15" cellspacing="0" style="font-family: monospace; max-width: 600px; margin: 20px auto;">
+  
+  <!-- Общая главная шапка таблицы -->
+  <tr>
+    <th colspan="2" style="background-color: #800000; color: white;">Что это ?</th>
+  </tr>
+  
+  <!-- Строка с контентом -->
+  <tr>
+    <!-- Левая ячейка -->
+    <td valign="top">
+      
+      <span style="color: #333;">Radarchan это проект посвящённый борьбе за свободу слова и анархию. Также его начало сподвигли действия одного президента именем которого я не хочу очернять этот сайт)<br><br>Сам проект работает на технологии mesh трансляции пакетов и никак не может быть ограничен властями, модерация контента происходит лишь самими пользователями с помощью локальной защиты.<br><br>Веселитесь, обсуждайте, кидайте мемы - всё ради лулзов это главное правило нашего проекта !</span>
+    </td>
+  
+</table>
+
+  <!-- Простая таблица с рамкой border="1" -->
+<table border="2" cellpadding="15" cellspacing="0" style="font-family: monospace; max-width: 600px; margin: 40px auto;">
+  
+  <!-- Общая главная шапка таблицы -->
+  <tr>
+    <th colspan="2" style="background-color: #800000; color: white;">Оки доки!</th>
+  </tr>
+  
+  <!-- Строка с контентом -->
+  <tr>
+    <!-- Левая ячейка -->
+    <td valign="top">
+      
+      <b style="color: #333;">Активные доски:</b><br>
+      <a href="thread1.html" style="color: #800000; font-weight: bold; text-decoration: none;">
+        /b/ - Рандом
+      </a>
+      <a href="thread2.html" style="color: #800000; font-weight: bold; text-decoration: none;">
+        /a/ - Аниме & Манга
+      </a>
+    </td>
+  
+</table>
+
+
+
+
+
+  <!-- Разметка элементов ползунка -->
+  <div class="custom-scrollbar-track" id="scrollTrack">
+    <div class="custom-scrollbar-thumb" id="scrollThumb"></div>
+  </div>
+
+  <!-- Скрипт логики работы ползунка -->
+  <script>
+    const track = document.getElementById('scrollTrack');
+    const thumb = document.getElementById('scrollThumb');
+    let isDragging = false;
+    let startY, startThumbTop;
+
+    function updateThumbPosition() {
+      const totalHeight = document.documentElement.scrollHeight;
+      const viewHeight = window.innerHeight;
+      const maxScroll = totalHeight - viewHeight;
+      
+      // Ползунок скрывается, если страница маленькая, и показывается, если она не влезает в экран
+      if (maxScroll <= 0) {
+        track.style.display = 'none';
+        return;
+      } else {
+        track.style.display = 'block';
+      }
+
+      const thumbHeight = Math.max(40, (viewHeight / totalHeight) * viewHeight);
+      thumb.style.height = `${thumbHeight}px`;
+
+      const scrollPercent = window.scrollY / maxScroll;
+      const maxThumbTop = viewHeight - thumbHeight;
+      const thumbTop = scrollPercent * maxThumbTop;
+
+      thumb.style.transform = `translateY(${thumbTop}px)`;
+    }
+
+    window.addEventListener('scroll', updateThumbPosition);
+    window.addEventListener('resize', updateThumbPosition);
+    
+    thumb.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      const style = window.getComputedStyle(thumb);
+      const matrix = new WebKitCSSMatrix(style.transform);
+      startThumbTop = matrix.m42; 
+      document.body.style.userSelect = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const deltaY = e.clientY - startY;
+      const viewHeight = window.innerHeight;
+      const thumbHeight = thumb.offsetHeight;
+      const maxThumbTop = viewHeight - thumbHeight;
+
+      let newThumbTop = startThumbTop + deltaY;
+      newThumbTop = Math.max(0, Math.min(newThumbTop, maxThumbTop));
+      thumb.style.transform = `translateY(${newThumbTop}px)`;
+
+      const totalHeight = document.documentElement.scrollHeight;
+      const maxScroll = totalHeight - viewHeight;
+      const scrollPercent = newThumbTop / maxThumbTop;
+
+      window.scrollTo(0, scrollPercent * maxScroll);
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      }
+    });
+
+    track.addEventListener('mousedown', (e) => {
+      if (e.target === thumb) return;
+      const viewHeight = window.innerHeight;
+      const thumbHeight = thumb.offsetHeight;
+      const maxThumbTop = viewHeight - thumbHeight;
+      
+      let targetThumbTop = e.clientY - (thumbHeight / 2);
+      targetThumbTop = Math.max(0, Math.min(targetThumbTop, maxThumbTop));
+
+      const totalHeight = document.documentElement.scrollHeight;
+      const maxScroll = totalHeight - viewHeight;
+      const scrollPercent = targetThumbTop / maxThumbTop;
+
+      window.scrollTo({
+        top: scrollPercent * maxScroll,
+        behavior: 'smooth'
+      });
+    });
+
+    updateThumbPosition();
+    window.addEventListener('load', updateThumbPosition);
+  </script>
+
+</body>
+</html>
