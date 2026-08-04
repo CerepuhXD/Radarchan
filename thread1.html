@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radarchan — Mesh Board</title>
+    <style>
+        :root {
+            --bg-color: #1e1e2e;
+            --panel-color: #252538;
+            --text-color: #cdd6f4;
+            --accent-color: #cba6f7;
+            --post-bg: #2a2a3f;
+            --reply-bg: #32324d;
+            --border-color: #45475a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Шапка */
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .top-logo { height: 40px; width: auto; }
+        .coords-text { font-size: 24px; font-weight: bold; color: var(--accent-color); }
+
+        /* Форма отправки */
+        .post-form {
+            background: var(--panel-color);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+        }
+        .post-form input, .post-form textarea {
+            width: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .post-form button {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Контейнер для тредов */
+        #threads-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Базовый пост (ОП-пост) */
+        .post-wrapper {
+            background: var(--post-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .post-meta {
+            font-size: 0.85em;
+            color: #89b4fa;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .post-id { color: var(--accent-color); font-family: monospace; }
+        .post-text { line-height: 1.5; white-space: pre-wrap; margin: 0 0 10px 0; }
+        
+        /* Кнопка быстрого ответа */
+        .reply-btn {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        /* Контейнер ответов внутри поста */
+        .replies-container {
+            margin-top: 15px;
+            padding-left: 20px; /* Сдвиг вправо создает визуальное дерево */
+            border-left: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Стили для вложенных ответов */
+        .replies-container .post-wrapper {
+            background: var(--reply-bg);
+            border-left: 3px solid var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <div class="header-container">
+        <img src="logo3.png" alt="Логотип сайта" class="top-logo">
+        <div class="coords-text">Radarchan /mesh/b/</div>
+    </div>
+
+    <!-- Форма создания нового треда / ответа -->
+    <div class="post-form">
+        <h3 id="form-title">Создать новый тред</h3>
+        <input type="text" id="post-parent" placeholder="ID родительского поста (пусто для ОП-поста)" readonly>
+        <textarea id="post-comment" rows="4" placeholder="Текст сообщения..." required></textarea>
+        <button type="button" id="submit-btn" onclick="sendPost()">Отправить в Mesh</button>
+        <button type="button" id="cancel-reply" style="display:none; background:#f38ba8;" onclick="resetForm()">Отмена</button>
+    </div>
+
+    <!-- Сюда JavaScript будет вставлять треды -->
+    <main id="threads-container"></main>
+
+    <!-- ТЕМАПЛАТ (ШАБЛОН) ПОСТА: Браузер его не отображает, но JS копирует его структуру -->
+    <template id="post-template">
+        <div class="post-wrapper">
+            <div class="post-meta">
+                <span class="post-timestamp"></span>
+                <span class="post-id"></span>
+                <button class="reply-btn">Ответить</button>
+            </div>
+            <p class="post-text"></p>
+            <!-- Контейнер для вложенных ответов (рекурсия) -->
+            <div class="replies-container"></div>
+        </div>
+    </template>
+
+    <script>
+        // Функция создания DOM-структуры поста на основе шаблона
+function createPostDOM(post) {
+    const template = document.getElementById('post-template');
+    // Клонируем содержимое шаблона
+    const clone = template.content.cloneNode(true);
+    
+    // Находим корневой блок внутри клона и задаем ему ID
+    const wrapper = clone.querySelector('.post-wrapper');
+    wrapper.id = `post-${post.id}`;
+
+    // Заполняем метаданные и текст
+    wrapper.querySelector('.post-id').textContent = `ID: ${post.id.substring(0, 10)}...`;
+    wrapper.querySelector('.post-timestamp').textContent = new Date(post.timestamp * 1000).toLocaleTimeString();
+    wrapper.querySelector('.post-text').textContent = post.comment;
+
+    // Настраиваем кнопку "Ответить"
+    const replyBtn = wrapper.querySelector('.reply-btn');
+    replyBtn.onclick = () => prepareReply(post.id);
+
+    return wrapper;
+}
+
+// При клике на "Ответить" переключаем форму в режим реплая
+function prepareReply(parentId) {
+    document.getElementById('form-title').textContent = `Ответ на пост ${parentId.substring(0,8)}...`;
+    document.getElementById('post-parent').value = parentId;
+    document.getElementById('cancel-reply').style.display = 'inline-block';
+    document.getElementById('post-comment').focus();
+}
+
+// Сброс формы в режим создания нового треда
+function resetForm() {
+    document.getElementById('form-title').textContent = 'Создать новый тред';
+    document.getElementById('post-parent').value = '';
+    document.getElementById('cancel-reply').style.display = 'none';
+    document.getElementById('post-comment').value = '';
+}
+
+// Эмуляция отправки (здесь будет отправка JSON в WebSocket вашего Python-скрипта)
+function sendPost() {
+    const comment = document.getElementById('post-comment').value;
+    const parentId = document.getElementById('post-parent').value || null;
+    
+    if(!comment) return alert("Введите текст");
+
+    const newPostData = {
+        id: "Qm" + Math.random().toString(36).substring(2, 15), // В будущем тут будет реальный мультихэш libp2p
+        parent_id: parentId,
+        timestamp: Math.floor(Date.now() / 1000),
+        comment: comment
+    };
+
+    console.log("Пакет готов к трансляции в PubSub:", newPostData);
+    
+    // Временная локальная проверка: симулируем, что пакет прилетел из сети
+    // В реальности этот вызов будет происходить в функции ws.onmessage
+    appendPostToDOM(newPostData); 
+    resetForm();
+}
+
+// Логика распределения постов (то, о чем мы говорили в прошлом сообщении)
+const postsMap = new Map();
+function appendPostToDOM(post) {
+    if (postsMap.has(post.id)) return; // Защита от дублей p2p
+    
+    postsMap.set(post.id, { ...post, children: [] });
+    const postElement = createPostDOM(post);
+
+    if (post.parent_id) {
+        // Ответ: ищем родителя на странице и вставляем в его .replies-container
+        const parentWrapper = document.getElementById(`post-${post.parent_id}`);
+        if (parentWrapper) {
+            parentWrapper.querySelector('.replies-container').appendChild(postElement);
+        }
+    } else {
+        // ОП-пост: вставляем в самый верх контейнера тредов
+        document.getElementById('threads-container').prepend(postElement);
+    }
+}
+
+    </script>
+</body>
+</html>
